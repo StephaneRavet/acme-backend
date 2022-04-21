@@ -14,4 +14,8 @@ app.post('/user/login', (req, res) => {
   res.json({token})
 })
 
+app.get('/user/logout', (req, res) => {
+  res.json()
+})
+
 app.listen(port, () => console.log(`App listening on port ${port}.`))
