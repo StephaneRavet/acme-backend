@@ -4,95 +4,92 @@ const router = express.Router()
 module.exports = (params) => {
   const { db, userController } = params
 
-  router.post('/tobasket', async (requete, reponse) => {
-    console.log(requete)
-    const data = await userController.tobasket(requete.body)
-    reponse.json(data)
+  router.post('/tobasket', async (req, res) => {
+    console.log(req)
+    const data = await userController.tobasket(req.body)
+    res.json(data)
   })
 
-  router.get('/basket', async (requete, reponse) => {
+  router.get('/basket', async (req, res) => {
     const data = await userController.basket()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/checkout', async (requete, reponse) => {
+  router.get('/checkout', async (req, res) => {
     const data = await userController.checkout()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/orders', async (requete, reponse) => {
+  router.get('/orders', async (req, res) => {
     const data = await userController.orders()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/order/:orderId', async (requete, reponse) => {
-    const data = await userController.order(requete.params.orderId)
-    reponse.json(data)
+  router.get('/order/:orderId', async (req, res) => {
+    const data = await userController.order(req.params.orderId)
+    res.json(data)
   })
 
-  router.get('/profile', async (requete, reponse) => {
+  router.get('/profile', async (req, res) => {
     const data = await userController.profile()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/crud', async (requete, reponse) => {
+  router.get('/crud', async (req, res) => {
     const data = await userController.crud()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/edit', async (requete, reponse) => {
+  router.get('/edit', async (req, res) => {
     const data = await userController.edit()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/edit/:userId', async (requete, reponse) => {
-    const data = await userController.edit(requete.params.userId)
-    reponse.json(data)
+  router.get('/edit/:userId', async (req, res) => {
+    const data = await userController.edit(req.params.userId)
+    res.json(data)
   })
 
-  router.get('/delete/:userId', async (requete, reponse) => {
-    const data = await userController.delete(requete.params.userId)
-    reponse.json(data)
+  router.get('/delete/:userId', async (req, res) => {
+    const data = await userController.delete(req.params.userId)
+    res.json(data)
   })
 
-  router.post('/save', async (requete, reponse) => {
+  router.post('/save', async (req, res) => {
     const data = await userController.save()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/signin', async (requete, reponse) => {
+  router.get('/signin', async (req, res) => {
     const data = await userController.signin()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.post('/login', async (requete, reponse) => {
-    const data = await userController.login()
-    reponse.json(data)
+  router.post('/login', async (req, res, next) => {
+    await userController.login(req, res)
   })
 
-  router.get('/logout', async (requete, reponse) => {
-    const data = await userController.logout()
-    reponse.json(data)
+  router.get('/logout', async (req, res) => {
+    const data = await userController.logout(request.session.userId)
+    res.json(data)
   })
 
-  router.get('/password_1', async (requete, reponse) => {
+  router.get('/password_1', async (req, res) => {
     const data = await userController.password_1()
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.post('/password_2', async (requete, reponse) => {
+  router.post('/password_2', async (req, res) => {
     const data = await userController.password_2(req.body)
-    reponse.json(data)
+    res.json(data)
   })
 
-  router.get('/password_3', async (requete, reponse) => {
-    const data = await userController.password_3()
-    reponse.json(data)
+  router.get('/password_3', async (req, res) => {
+    await userController.password_3(req, res)
   })
 
-  router.post('/password_4', async (requete, reponse) => {
-    const data = await userController.password_4(req.body)
-    reponse.json(data)
+  router.post('/password_4', async (req, res) => {
+    await userController.password_4(req, res)
   })
 
   return router

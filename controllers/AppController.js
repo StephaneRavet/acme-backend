@@ -1,10 +1,10 @@
 class AppController {
-  home(reponse) {
-    reponse.redirect('/product/collection')
+  home(res) {
+    res.redirect('/product/collection')
   }
 
-  error_404(reponse) {
-    reponse.status(404).send('API inexistant')
+  error_404(res) {
+    res.status(404).send('API inexistant')
   }
 }
 

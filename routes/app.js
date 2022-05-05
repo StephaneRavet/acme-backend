@@ -4,12 +4,12 @@ const router = express.Router()
 module.exports = (params) => {
   const { appController } = params
 
-  router.all('/', (requete, reponse) => {
-    appController.home(reponse)
+  router.all('/', (req, res) => {
+    appController.home(res)
   })
 
-  router.all('/error_404', (requete, reponse) => {
-    appController.error_404(reponse)
+  router.all('/error_404', (req, res) => {
+    appController.error_404(res)
   })
 
   return router

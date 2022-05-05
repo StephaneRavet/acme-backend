@@ -20,12 +20,12 @@
 | GET  | /user/checkout                           | 1     | UserController.checkout      | Valider le panier.                                       | OK              | VIEW_CHECKOUT             |
 | GET  | /user/orders                             | 1     | UserController.orders        | Afficher la liste des commandes.                         | JSONArray       | VIEW_ORDERS               |
 | GET  | /user/order/{orderId}                    | 1     | UserController.order         | Afficher le détail d'une commande.                       | JSONObject      | VIEW_ORDER                |
-| GET  | /user/profile                            | 1     | UserController.profile       | Afficher le profil d'un utilisateur.                       | JSONObject      | VIEW_PROFILE              |
-| GET  | /user/crud                               | 2     | UserController.crud          | Afficher les utilisateurs (gestion).                       | JSONArray       | VIEW_CRUD_DEALERS         |
-| GET  | /user/edit                               | n/a   | UserController.edit          | Créer un utilisateur (saisie).                             | n/a             | VIEW_EDIT_DEALER          |
-| GET  | /user/edit/{userId}                      | 2     | UserController.edit          | Modifier un utilisateur (saisie).                          | JSONObjet       | VIEW_EDIT_DEALER          |
-| GET  | /user/delete/{userId}                    | 2     | UserController.delete        | Supprimer un utilisateur.                                  | OK              | GET /user/crud            |
-| POST | /user/save                               | 2     | UserController.save          | Sauvegarder un utilisateur (création ou modification).     | OK              | GET /user/crud            |
+| GET  | /user/profile                            | 1     | UserController.profile       | Afficher le profil d'un revendeur.                       | JSONObject      | VIEW_PROFILE              |
+| GET  | /user/crud                               | 2     | UserController.crud          | Afficher les revendeurs (gestion).                       | JSONArray       | VIEW_CRUD_DEALERS         |
+| GET  | /user/edit                               | n/a   | UserController.edit          | Créer un revendeur (saisie).                             | n/a             | VIEW_EDIT_DEALER          |
+| GET  | /user/edit/{userId}                      | 2     | UserController.edit          | Modifier un revendeur (saisie).                          | JSONObjet       | VIEW_EDIT_DEALER          |
+| GET  | /user/delete/{userId}                    | 2     | UserController.delete        | Supprimer un revendeur.                                  | OK              | GET /user/crud            |
+| POST | /user/save                               | 2     | UserController.save          | Sauvegarder un revendeur (création ou modification).     | OK              | GET /user/crud            |
 | GET  | /category/crud                           | 2     | CategoryController.list      | Afficher les catégories (gestion).                       | JSONArray       | VIEW_CRUD_CATEGORIES      |
 | GET  | /category/edit                           | n/a   | CategoryController.edit      | Créer une catégorie (saisie).                            | n/a             | VIEW_EDIT_CATEGORY        |
 | GET  | /category/edit/{categoryId}              | 2     | CategoryController.edit      | Modifier une catégorie (saisie).                         | JSONObject      | VIEW_EDIT_CATEGORY        |

@@ -12,8 +12,8 @@ module.exports = (params) => {
   router.use('/product', productRoute(params))
   router.use('/user', userRoute(params))
 
-  router.use('/', (requete, reponse) => {
-    reponse.status(404).send('API inexistant')
+  router.use('/', (req, res) => {
+    res.status(404).send('API inexistant')
   })
 
   return router

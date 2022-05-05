@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 class UserController {
   constructor(userModel, orderModel) {
@@ -102,46 +103,50 @@ class UserController {
       .catch((error) => res.status(500).json({ error }))
   }
 
-  async login(email, password) {
-    User.findOne({ email: email })
+  async login(req, res) {
+    const { email, password } = req.body
+    if (!email || !password) {
+      return res.status(401).json({ error: "Données requises : email, password." })
+    }
+    this.User.findOne({ where: { email: email } })
       .then((user) => {
         if (!user) {
           return res.status(401).json({ error: 'Utilisateur non trouvé !' })
         }
         bcrypt
-          .compare(password, user.password)
+          .compare(password, user.dataValues.pwd)
           .then((valid) => {
             if (!valid) {
               return res.status(401).json({ error: 'Mot de passe incorrect !' })
             } else {
-              res.status(200).json({
+              res.json({
                 userId: user.userId,
-                token: jwt.sign({ userId: user._id }, 'RANDOM_TOKEN_SECRET', {
-                  expiresIn: '3600s',
-                }),
-              })
+                token: jwt.sign(
+                  { userId: user._id },
+                  'RANDOM_TOKEN_SECRET',
+                  { expiresIn: '3600s' }
+                )
+              });
             }
           })
-          .catch((error) => res.status(500).json({ error }))
       })
-      .catch((error) => res.status(500).json({ error }))
   }
 
-  async logout() {
-    if (request.session.userId) {
+  async logout(userId) {
+    if (userId) {
       delete request.session.userId
-      response.json({ result: 'SUCCESS' })
+      return { result: 'SUCCESS' }
     } else {
-      response.json({ result: 'ERROR', message: 'User is not logged in.' })
+      throw new Error({ status: 401, message: 'User is not logged in.' })
     }
   }
 
-  async password_1() {}
+  async password_1() { }
   async password_2(data) {
     let { email } = data
     let aUser = await this.User.findOne({ where: { email: email } })
   }
-  async password_3() {}
+  async password_3() { }
   async password_4(data) {
     let { id, pwd } = data
     let aUser = await this.User.findOne({ where: { userId: id } })
