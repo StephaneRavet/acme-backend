@@ -43,7 +43,7 @@ db.sequelize
 
     // Création de l'application Node.js
     const app = express()
-    const port = 3000
+    const port = process.env.PORT || 3000
 
     // Parseur JSON pour recevoir les données de requêtes
     app.use(
