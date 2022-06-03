@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
+const db = require('../models/index')
 
 class UserController {
-  constructor(userModel, orderModel) {
-    this.User = userModel
-    this.Order = orderModel
+  constructor() {
+    this.User = db.user
+    this.Order = db.order
     this.basket = []
   }
 
@@ -14,7 +15,6 @@ class UserController {
   }
 
   async basket() {
-    this.basket = []
     return this.basket
   }
 
@@ -35,7 +35,12 @@ class UserController {
   }
 
   async profile(id) {
-    return this.User.findOne({ where: { userId: id } })
+    try {
+      const data = await this.User.findOne({ where: { userId: id } })
+      return data
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async crud() {
@@ -103,45 +108,50 @@ class UserController {
       .catch((error) => res.status(500).json({ error }))
   }
 
-  async login(req, res) {
-    const { email, password } = req.body
-    if (!email || !password) {
-      return res.status(401).json({ error: "Données requises : email, password." })
-    }
-    this.User.findOne({ where: { email: email } })
-      .then((user) => {
-        if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !' })
+  async login(requete) {
+    var status = 500
+    var message = { erreur: 'Erreur interne' }
+
+    try {
+      const user = await this.User.findOne({ where: { email: requete.email } })
+      if (!user) {
+        status = 401
+        message = { erreur: 'Utilisateur non trouvé !' }
+      } else {
+        const valid = await bcrypt.compare(requete.password, user.pwd)
+        if (valid === true) {
+          status = 200
+          message = {
+            userId: user.userId,
+            token: jwt.sign({ id: user.userId }, process.env.TOKEN_KEY, { expiresIn: '3600s' }),
+          }
+        } else {
+          status = 401
+          message = { erreur: 'Mot de passe incorrect !' }
         }
-        bcrypt
-          .compare(password, user.dataValues.pwd)
-          .then((valid) => {
-            if (!valid) {
-              return res.status(401).json({ error: 'Mot de passe incorrect !' })
-            } else {
-              res.json({
-                userId: user.userId,
-                token: jwt.sign(
-                  { userId: user._id },
-                  'RANDOM_TOKEN_SECRET',
-                  { expiresIn: '3600s' }
-                )
-              });
-            }
-          })
-      })
+      }
+    } catch (error) {
+      status = 500
+      message = 'Erreur détectée: ' + error
+    }
+    return { status: status, retour: message }
   }
 
-  async logout(req) {
-    return { result: 'SUCCESS' }
+  async logout(requete) {
+    if (requete.session.userId) {
+      delete requete.session.userId
+      response.json({ result: 'SUCCESS' })
+    } else {
+      response.json({ result: 'ERROR', message: 'User is not logged in.' })
+    }
   }
 
-  async password_1() { }
+  async password_1() {}
   async password_2(data) {
     let { email } = data
     let aUser = await this.User.findOne({ where: { email: email } })
   }
-  async password_3() { }
+  async password_3() {}
   async password_4(data) {
     let { id, pwd } = data
     let aUser = await this.User.findOne({ where: { userId: id } })

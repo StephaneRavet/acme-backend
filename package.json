@@ -1,10 +1,11 @@
 {
   "name": "acme-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Backend projet ACME",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "trace": "node --trace-deprecation server.js",
     "dev": "nodemon server.js",
     "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
@@ -12,6 +13,7 @@
     "nodejs",
     "api"
   ],
+  "author": "Marc Augier - Visiplus",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",

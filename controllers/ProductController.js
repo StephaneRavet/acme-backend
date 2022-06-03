@@ -1,13 +1,36 @@
 const fs = require('fs')
+const db = require('../models/index')
 
 class ProductController {
-  constructor(productModel, categoryModel) {
-    this.Product = productModel
-    this.Category = categoryModel
+  constructor() {
+    this.Product = db.product
+    this.Category = db.category
   }
 
-  collection() {
-    return this.Product.findAll({ include: [{ model: this.Category }] })
+  async collection() {
+    let categories = await this.Category.findAll()
+    const products = await this.Product.findAll()
+
+    categories = JSON.parse(JSON.stringify(categories))
+
+    categories.map(function (category, i) {
+      category.product = products
+        .filter(function (product) {
+          if (product.categoryId == category.categoryId) {
+            return product
+          }
+        })
+        .map(function (d2) {
+          return {
+            productId: d2.productId,
+            name: d2.name,
+            ref: d2.ref,
+            price: d2.price,
+          }
+        })
+    })
+
+    return categories
   }
 
   detail(productId) {
