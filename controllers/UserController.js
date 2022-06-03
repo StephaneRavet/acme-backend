@@ -132,13 +132,8 @@ class UserController {
       })
   }
 
-  async logout(userId) {
-    if (userId) {
-      delete request.session.userId
-      return { result: 'SUCCESS' }
-    } else {
-      throw new Error({ status: 401, message: 'User is not logged in.' })
-    }
+  async logout(req) {
+    return { result: 'SUCCESS' }
   }
 
   async password_1() { }

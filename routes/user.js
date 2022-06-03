@@ -70,7 +70,7 @@ module.exports = (params) => {
   })
 
   router.get('/logout', async (req, res) => {
-    const data = await userController.logout(request.session.userId)
+    const data = await userController.logout(req)
     res.json(data)
   })
 
